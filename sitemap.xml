@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://jxblogs.com/404.html</loc>
+    
+    <lastmod>2021-11-12</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://jxblogs.com/census/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
@@ -51,20 +58,6 @@
   </url>
   
   <url>
-    <loc>http://jxblogs.com/baidu_verify_xxxxxxx.html</loc>
-    
-    <lastmod>2021-11-12</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://jxblogs.com/google1xxxxxxx0.html</loc>
-    
-    <lastmod>2021-11-12</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://jxblogs.com/friends/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
@@ -86,13 +79,6 @@
   </url>
   
   <url>
-    <loc>http://jxblogs.com/404.html</loc>
-    
-    <lastmod>2021-11-12</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://jxblogs.com/List/galleries/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
@@ -101,13 +87,6 @@
   
   <url>
     <loc>http://jxblogs.com/List/movies/index.html</loc>
-    
-    <lastmod>2021-11-12</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E4%BA%BA%E7%89%A9/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
     
@@ -128,14 +107,21 @@
   </url>
   
   <url>
-    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E9%A3%8E%E6%99%AF/index.html</loc>
+    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E6%8F%92%E7%94%BB/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
     
   </url>
   
   <url>
-    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E6%8F%92%E7%94%BB/index.html</loc>
+    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E4%BA%BA%E7%89%A9/index.html</loc>
+    
+    <lastmod>2021-11-12</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://jxblogs.com/List/galleries/%E5%9F%8E%E5%B8%82%E9%A3%8E%E5%85%89/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
     
@@ -149,7 +135,7 @@
   </url>
   
   <url>
-    <loc>http://jxblogs.com/List/galleries/%E5%9F%8E%E5%B8%82%E9%A3%8E%E5%85%89/index.html</loc>
+    <loc>http://jxblogs.com/List/galleries/%E5%8A%A8%E6%BC%AB%E9%A3%8E%E6%99%AF/index.html</loc>
     
     <lastmod>2021-11-12</lastmod>
     
@@ -192,6 +178,13 @@
   
   <url>
     <loc>http://jxblogs.com/tags/index.html</loc>
+    
+    <lastmod>2021-11-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://jxblogs.com/404/index.html</loc>
     
     <lastmod>2021-11-06</lastmod>
     
