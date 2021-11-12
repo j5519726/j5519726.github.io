@@ -2076,13 +2076,13 @@ footer .copy-right {
 /* 深色模式按钮设置 */
 #sma {
     background: #000;
-    width: 48px;
-    height: 47px;
+    width: 38px;
+    height: 38px;
     display: block;
     position: fixed;
     border-radius: 50%;
     right: 15px;
-    bottom: 137px;
+    bottom: 170px;
     padding-top: 15px;
     margin-bottom: 0;
     z-index: 998;
@@ -2095,10 +2095,10 @@ footer .copy-right {
     bottom: 8px;
     font-size: 1.48rem!important;
 }
-#sma .fa-lightbulb  {
+#sma .fa-lightbulb-o  {
     position: absolute;
-    right: 16px;
-    bottom: 12px;
+    right: 13px;
+    bottom: 8px;
     font-size: 1.5rem!important;
 }
 
@@ -2109,11 +2109,10 @@ footer .copy-right {
     content: "\f086";
 }
 
+
 /* 深色模式设置 */
 /* 字体颜色变灰白色 */
 body.dark .fas,
-body.dark .sub-nav li span,
-body.dark .publish-date,
 body.dark .title,
 body.dark .row .text,
 body.dark article .article-content .summary,
@@ -2148,10 +2147,6 @@ body.dark a
 
 /* 背景颜色变灰色 */
 body.dark .card,
-body.dark .sub-nav,
-body.dark #toc-content,
-body.dark .toc-title,
-body.dark .toc-list,
 body.dark .block-with-text:after
 {
     background-color: #282c34;
