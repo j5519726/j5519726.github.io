@@ -6,7 +6,7 @@
   <link href="https://jxblogs.com/atom.xml" rel="self"/>
   
   <link href="https://jxblogs.com/"/>
-  <updated>2021-11-27T16:06:25.352Z</updated>
+  <updated>2022-01-16T11:56:46.433Z</updated>
   <id>https://jxblogs.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SQL漏洞-注入拓展&amp;Access数据库</title>
+    <link href="https://jxblogs.com/posts/9a92240e.html"/>
+    <id>https://jxblogs.com/posts/9a92240e.html</id>
+    <published>2022-01-14T13:11:10.000Z</published>
+    <updated>2022-01-16T11:56:46.433Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="SQL漏洞-注入拓展-amp-Access数据库"><a href="#SQL漏洞-注入拓展-amp-Access数据库" class="headerlink" title="SQL漏洞-注入拓展&amp;Access数据库"></a>SQL漏洞-注入拓展&amp;Access数据库</h1><h3 id="加解密注入"><a href="#加解密注入" class="headerlink" title="加解密注入"></a>加解密注入</h3><h4 id="常见数据加密方式"><a href="#常见数据加密方式" class="headerlink" title="常见数据加密方式"></a>常见数据加密方式</h4><ul><li><p>1、MD5：不可逆算法，最常用的算法之一，70-80%的网站管理员密码都是采用md5，网上解密的方法是采用枚举的方法(0-9，a-z的随机组合)，32位</p></li><li><p>2、SHA：其中包括SHA1、SHA256、SHA384、SHA512，数字越大密文越长(0-9，a-z的随机组合)</p></li><li><p>3、ASCII：ASCII码</p></li><li><p>4、进制：计算机进制数</p></li><li><p>5、时间戳：计算机不会自己读取当前时间，而是采用对当前时间进行加密的时间戳供计算机来识别</p></li><li><p>6、URL：访问网站的地址信息  %20：[空格]  %23：#</p></li><li><p>7、BASE64：很多采用base64加密后的密文后面都是两个==，且=如果出现就必须在结尾出现</p></li><li><p>8、Unescape：%u+4位数字依次加密</p></li><li><p>9、AES：更高级更安全的加密方式，其中包含四个因素：填充、数据块、密码、偏移量，如果采用base64解密类似这种密文后是乱码，则很可能是采取Aes方式进行加密的，解密Aes方式的必须要知道密码和偏移量这两个前提</p></li><li><p>10、DES：和AES类似</p></li><li><p>11、带Salt：MD5+salt</p></li><li><p>12、自定义组合</p><h4 id="靶场演示"><a href="#靶场演示" class="headerlink" title="靶场演示"></a>靶场演示</h4><p>Less-21：使用admin-admin登录</p><p><img src="http://qiniu.jxblogs.com/image-20220114212704886.png"></p><p>可以看到这里读取的是cookie信息，抓个包试试 </p><p><img src="http://qiniu.jxblogs.com/image-20220114212939710.png">由于读取的是cookie信息，正常情况下需要在cookie处进行注入，不过此时可以看到uname是被加密过后的状态，猜测是base64加密，因为%3D在url编码中是=号的意思，那么uname就是YWRtaW4=，符合base64加密特征，也可以将鼠标放在加密的数据上进行查看，同样可以显示出YWRtaW4=</p></li></ul><p><img src="http://qiniu.jxblogs.com/image-20220114213348591.png"></p><p>​        选中右键将其发送到decoder解码器进行解码后得出</p><p><img src="http://qiniu.jxblogs.com/image-20220114213834809.png"></p><p>​        由于是使用加密方式进行读取数据，那么我们进行注入的时候同样也要将他的注入语句加密后再进行替换</p><p><img src="http://qiniu.jxblogs.com/image-20220114214138127.png"></p><p>​        注入后显示正常，注入成功</p><p><img src="http://qiniu.jxblogs.com/image-20220114214306179.png"></p><blockquote><p>在注入过程中碰到的加解密问题，首先要明确的就是加密方式，可以通过密文特征来辨别</p></blockquote><h3 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h3><p>二次注入主要分两步：</p><ul><li><p>第一步：插入恶意数据</p><p>第一次进行数据库插入数据的时候，用户向数据库插入恶意语句，但是在写入数据库的时候还是保留原来的数据</p></li><li><p>第二步：引用恶意数据</p><p>在将数据存入到数据库之后，寻找另一处引用这个数据的操作，取出后直接给变量并带入数据库，这样就造成了SQL的二次注入</p></li></ul><blockquote><p>适用场景：已知某用户的用户名，在注册用户时，使用其用户名在末尾加上闭合方式并注释后进行注册，成为一个全新的用户，但是这个新用户在修改密码时，利用的sql语句的特性，提前将数据闭合，只保留前面的已知某用户的用户名，后面全部注释，那么此时就能对用户密码进行修改，完成对密码的盗取</p></blockquote><h4 id="靶场演示-1"><a href="#靶场演示-1" class="headerlink" title="靶场演示"></a>靶场演示</h4><p>Less-24：使用注册后的账户xxu-123456登录</p><p><img src="http://qiniu.jxblogs.com/image-20220114215941920.png"></p><p>这是原本的账户，我们需要注册一个二次账户来对这个用户进行密码盗取，通过观察源码可以发现sql语句如下：</p><pre class="line-numbers language-none"><code class="language-none">$sql = "UPDATE users SET PASSWORD='$pass' where username='$username' and password='$curr_pass' ";<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>已知用户xxu，这时我们在不知晓密码的情况下，重新注册一个账户，插入恶意数据，观察sql语句可以发现，采用单引号闭合，所以我们注册账户为xxu’#，第一次登录并求改密码，由于sql语句特性，此时修改密码传入的语句为：</p><pre class="line-numbers language-none"><code class="language-none">$sql = "UPDATE users SET PASSWORD='$pass' where username='xxu'#' and password='$curr_pass' ";<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>那么此时就会将xxu的密码修改，我们实际尝试看看，首先注册账户xxu’#</p><p><img src="http://qiniu.jxblogs.com/image-20220114222204852.png"></p><p>登录xxu’#并将密码修改为654321</p><p><img src="http://qiniu.jxblogs.com/image-20220114222324669.png"></p><p>重新查看数据库</p><p><img src="http://qiniu.jxblogs.com/image-20220114222417052.png"></p><p>发现被修改的账户不是xxu’#而是xxu，这也验证了之前的假设，利用sql语句的特性插入恶意数据并成功引用</p><blockquote><p>如果输入框有长度限制怎么办？<br>                1、前端限制：通过修改前端参数(F12修改maxlength)<br>                2、后端限制：没有办法</p></blockquote><h3 id="DNSlog注入"><a href="#DNSlog注入" class="headerlink" title="DNSlog注入"></a>DNSlog注入</h3><p><strong>原理：有时候注入发现并没有回显，也不能利用时间盲注，那么就可以利用带外通道(第三方平台)，也就是利用其他协议或者渠道，如http请求、DNS解析、SMB服务等将数据带出。DNSlog盲注可以减少发送的请求，直接回显数据实现注入</strong></p><blockquote><p>利用前提条件:</p><p>★mysql.ini中secure_file_priv必须为空<br>        ★secure_file_priv为null，不允许导入导出<br>        ★secure_file_priv为/tmp，导入导出只能在/tmp目录下<br>        ★secure_file_priv为空时，则不做限制允许导入导出</p></blockquote><pre class="line-numbers language-none"><code class="language-none">使用场景：当获取到一个网站的高权限以后，需要对数据库进行读写操作，由于网站的种种限制，发现无法对数据库进行读取和写入，这个时候就可以利用DNSlog注入，利用第三方平台将它回显出来。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h4 id="靶场演示-2"><a href="#靶场演示-2" class="headerlink" title="靶场演示"></a>靶场演示</h4><p>Less-5：布尔盲注靶场，假设无法使用盲注</p><p>利用第三方平台：<a href="http://ceye.io/">CEYE平台</a></p><p>配合DNSlog工具：<a href="https://github.com/ADOOO/DnslogSqlinj">DNSlog注入工具</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
+      
+    
+    
+    
+    <category term="-web渗透" scheme="https://jxblogs.com/categories/web%E6%B8%97%E9%80%8F/"/>
+    
+    
+    <category term="web渗透" scheme="https://jxblogs.com/tags/web%E6%B8%97%E9%80%8F/"/>
+    
+    <category term="SQL注入" scheme="https://jxblogs.com/tags/SQL%E6%B3%A8%E5%85%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>SQL漏洞-增删改查&amp;报错盲注</title>
